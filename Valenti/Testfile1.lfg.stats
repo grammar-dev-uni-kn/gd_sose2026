@@ -1,18 +1,34 @@
-((1) (0 0.007 0) (84 words))
+((1) (0 0.003 0) (5 words))
+((2) (0 0.000 0) (5 words))
+((3) (0 0.000 0) (5 words))
+((4) (0 0.000 0) (5 words))
+((5) (0 0.004 0) (7 words))
+((6) (0 0.000 0) (7 words))
+((7) (0 0.000 0) (7 words))
+((8) (0 0.004 0) (4 words))
+((9) (0 0.000 0) (4 words))
+((10) (0 0.000 0) (3 words))
+((11) (0 0.000 0) (3 words))
+((12) (0 0.000 0) (4 words))
+((13) (0 0.000 0) (4 words))
+((14) (0 0.000 0) (5 words))
+((15) (0 0.000 0) (5 words))
+((16) (0 0.000 0) (7 words))
+((17) (0 0.000 0) (4 words))
 
 XLE release of Mar 17, 2017 21:12.
 Grammar = /home/ilaria/grammars/gd_sose2026/Valenti/grammar1.lfg.
 Grammar last modified on May 05, 2026 17:06.
 Host machine is DESKTOP-KAR20M4.
-1 sentence, 0 errors, 0 mismatches
-1 sentence had 0 parses
+17 sentences, 0 errors, 0 mismatches
+17 sentences had 0 parses
 timeout = 100
 max_xle_scratch_storage = 100 MB
 prune_subtree_location = 1
 max_new_events_per_graph_when_skimming = 500
-maximum raw subtrees per sentence = 83 (#1)
-tokens = 0.0%, morph = 0.0%, multiword = 0.0%, lex = 100.0%, chart = 0.0%,
+maximum raw subtrees per sentence = 7 (#5)
+tokens = 0.0%, morph = 0.0%, multiword = 0.0%, lex = 0.0%, chart = 100.0%,
 unifier = 0.0%, completer = 0.0%, solver = 0.0%, output = 0.0%
-max_alloc_mem = 337.80 MB
-0.007 CPU secs total, 0.007 CPU secs max
+max_alloc_mem = 34.41 MB
+0.011 CPU secs total, 0.004 CPU secs max
 elapsed time = 0 seconds
