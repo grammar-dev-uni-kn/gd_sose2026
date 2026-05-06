@@ -18,7 +18,7 @@ DEMO   ENGLISH   RULES (1.0)
 	     (! CASE)=nom;
  	 VP: ^=!.
 
-   VP --> (AUX)
+   VP --> (AUX: ^=!)
           V: ^=!; 
  	  (NP: (^ OBJ)=!
 	       (! CASE)=acc)
@@ -27,8 +27,8 @@ DEMO   ENGLISH   RULES (1.0)
    PP --> P
           NP.
 
-   NP --> (D)  "can leave out ^=!"
- 	  N. 
+   NP --> (D: ^=!)
+           N: ^=!. 
 
 ----
 
@@ -38,31 +38,40 @@ PRES3SG = (^ TENSE) = pres
           (^ SUBJ PERS) = 3
           (^ SUBJ NUM) = sg.
 
-PRES-NON3SG = (^ TENSE) = pres
-              { { (^ SUBJ NUM) = sg
-                  (^ SUBJ PERS) = 1 }
-              | { (^ SUBJ NUM) = pl
-                  (^ SUBJ PERS) = 1 }
-              | { (^ SUBJ NUM) = sg
-                  (^ SUBJ PERS) = 2 }
-              | { (^ SUBJ NUM) = pl
-                  (^ SUBJ PERS) = 2 }
-              | { (^ SUBJ NUM) = pl
-                  (^ SUBJ PERS) = 3 } }.
+PRES-NON3SG = { (^ TENSE) = pres
+                (^ SUBJ PERS) = 1
+                (^ SUBJ NUM) = sg
+              | (^ TENSE) = pres
+                (^ SUBJ PERS) = 1
+                (^ SUBJ NUM) = pl
+              | (^ TENSE) = pres
+                (^ SUBJ PERS) = 2
+                (^ SUBJ NUM) = sg
+              | (^ TENSE) = pres
+                (^ SUBJ PERS) = 2
+                (^ SUBJ NUM) = pl
+              | (^ TENSE) = pres
+                (^ SUBJ PERS) = 3
+                (^ SUBJ NUM) = pl }.
 
-PAST = (^ TENSE) = past
-        { { (^ SUBJ NUM) = sg
-            (^ SUBJ PERS) = 1 }
-        | { (^ SUBJ NUM) = pl
-            (^ SUBJ PERS) = 1 }
-        | { (^ SUBJ NUM) = sg
-            (^ SUBJ PERS) = 2 }
-        | { (^ SUBJ NUM) = pl
-            (^ SUBJ PERS) = 2 }
-        | { (^ SUBJ NUM) = sg
-            (^ SUBJ PERS) = 3 }
-        | { (^ SUBJ NUM) = pl
-            (^ SUBJ PERS) = 3 } }.
+PAST =  { (^ TENSE) = past
+          (^ SUBJ PERS) = 1
+          (^ SUBJ NUM) = sg
+        | (^ TENSE) = past
+          (^ SUBJ PERS) = 1
+          (^ SUBJ NUM) = pl
+        | (^ TENSE) = past
+          (^ SUBJ PERS) = 2
+          (^ SUBJ NUM) = sg
+        | (^ TENSE) = past
+          (^ SUBJ PERS) = 2
+          (^ SUBJ NUM) = pl
+        | (^ TENSE) = past
+          (^ SUBJ PERS) = 3
+          (^ SUBJ NUM) = sg
+        | (^ TENSE) = past
+          (^ SUBJ PERS) = 3
+          (^ SUBJ NUM) = pl }.
 
 PAST-BE-3SG = (^ TENSE) = past
           (^ SUBJ PERS) = 3
@@ -120,7 +129,7 @@ gorillas  N * (^ PRED) = 'gorilla'
 	      @PL-3PERS.
 
 gorilla N * (^ PRED)='gorilla'
-             @SG-3PERS.
+            @SG-3PERS.
 
 dog 	  N * (^ PRED) = 'dog'
 	      @SG-3PERS. 
@@ -185,9 +194,10 @@ see     V*
             @PRES-NON3SG
             @(OPT-TRANS see).
 
-was   AUX * (^ PRED) = 'be'
+was   AUX * "(^ PRED) = 'be'
             @MOOD-IND
-            @PAST-BE-3SG.
+            @PAST-BE-3SG
+            (^ PARTICIPLE) =c past".
 
 seen    V* (^ PARTICIPLE) = past
            @(TRANS see).
@@ -209,7 +219,7 @@ saw     V*
 slept     V*
             @MOOD-IND
             @PAST
-            @(OPT-TRANS sleep).
+            @(INTRANS sleep).
 
 the  D *  (^ DEF) = +.
 
