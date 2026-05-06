@@ -1,32 +1,63 @@
-#show how it works
+#1 - Intransitive verb
 
-the dog devours bones
+the cat sleeps
 
-# unification failure, subject-verb agreement (consistency)
+#2 - Transitive verb (3rd person singular)
 
-the dogs devours bones
+the dog devours the bone
 
-# coherence violation
+#3 - Transitive verb (3rd person plural)
 
-the dog appears bones 
+the cats chase a mouse
 
-# completeness violation
+#4 - The verb "eat" as intransitive
 
-the dog devours 
+the dog eats
 
-# missing PRED value, completeness violation
+#5 - The verb "eat" as transitive
 
-the dog devours a bone
+the cats eat a treat
 
-#missing rules, unknown words
+#6 - Subject and verb don't agree
 
-the dog devours bones in the park
+the girl see the gorilla
 
-#new verbs --- intrans
+#7 - I suppose because there is no determiner
 
-a dog sleeps
+cat chases dogs
 
-#new verbs -- trans
+#8 - Subject and verb don't agree
 
-a dog chases a bone
+gorilla devour bananas
 
+#9 - Subject and verb don't agree
+
+gorillas devours banana
+
+#10 - Passive structure with agent
+
+the girl was seen by the gorilla
+
+#11 - Passive structure without agent
+
+the cake was eaten
+
+#12 - Passive structure without agent
+
+the cat was chased
+
+#13 - Passive structure with agent
+
+the bone was devoured by a dog
+
+#14 - Passive structure without past participle
+
+the girl was saw by the gorilla
+
+#15 - Passive structure without past participle
+
+the dog was slept
+
+#16 - The lexeme "was" doesn't work as a verb in its past tense but as an auxiliary
+
+the girl was a banana

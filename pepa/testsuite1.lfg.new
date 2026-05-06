@@ -1,33 +1,65 @@
-#show how it works
+#1 - Intransitive verb
 
-the dog devours bones (1 0.003 11)
+the cat sleeps (1 0.003 8)
 
-# unification failure, subject-verb agreement (consistency)
+#2 - Transitive verb (3rd person singular)
 
-the dogs devours bones (0 0.003 11)
+the dog devours the bone (1 0.002 13)
 
-# coherence violation
+#3 - Transitive verb (3rd person plural)
 
-the dog appears bones  (0 0.002 0)
+the cats chase a mouse (1 0.002 13)
 
-# completeness violation
+#4 - The verb "eat" as intransitive
 
-the dog devours  (0 0.001 8)
+the dog eats (1 0.002 8)
 
-# missing PRED value, completeness violation
+#5 - The verb "eat" as transitive
 
-the dog devours a bone (1 0.001 13)
+the cats eat a treat (1 0.005 13)
 
-#missing rules, unknown words
+#6 - Subject and verb don't agree
 
-the dog devours bones in the park (0 0.001 0)
+the girl see the gorilla (0 0.001 13)
 
-#new verbs --- intrans
+#7 - I suppose because there is no determiner
 
-a dog sleeps (0 0.001 0)
+cat chases dogs (0 0.001 0)
 
-#new verbs -- trans
+#8 - Subject and verb don't agree
 
-a dog chases a bone (0 0.001 0)
+gorilla devour bananas (0 0.001 0)
 
-# 8 sentences, 0.013 CPU secs total, 0.003 CPU secs max (04/24/26)
+#9 - Subject and verb don't agree
+
+gorillas devours banana (0 0.001 0)
+
+#10 - Passive structure with agent
+
+the girl was seen by the gorilla (1 0.001 18)
+
+#11 - Passive structure without agent
+
+the cake was eaten (1 0.001 10)
+
+#12 - Passive structure without agent
+
+the cat was chased (1 0.001 10)
+
+#13 - Passive structure with agent
+
+the bone was devoured by a dog (1 0.001 18)
+
+#14 - Passive structure without past participle
+
+the girl was saw by the gorilla (0 0.001 0)
+
+#15 - Passive structure without past participle
+
+the dog was slept (0 0.001 0)
+
+#16 - The lexeme "was" doesn't work as a verb in its past tense but as an auxiliary
+
+the girl was a banana (0 0.001 0)
+
+# 16 sentences, 0.026 CPU secs total, 0.005 CPU secs max (05/07/26)
