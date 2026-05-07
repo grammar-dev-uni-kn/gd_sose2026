@@ -1,0 +1,18 @@
+((1) (0 0.007 0) (84 words))
+
+XLE release of Mar 17, 2017 21:12.
+Grammar = /home/ilaria/grammars/gd_sose2026/Valenti/grammar1.lfg.
+Grammar last modified on May 05, 2026 17:06.
+Host machine is DESKTOP-KAR20M4.
+1 sentence, 0 errors, 0 mismatches
+1 sentence had 0 parses
+timeout = 100
+max_xle_scratch_storage = 100 MB
+prune_subtree_location = 1
+max_new_events_per_graph_when_skimming = 500
+maximum raw subtrees per sentence = 82 (#1)
+tokens = 0.0%, morph = 0.0%, multiword = 0.0%, lex = 0.0%, chart = 100.0%,
+unifier = 0.0%, completer = 0.0%, solver = 0.0%, output = 0.0%
+max_alloc_mem = 370.41 MB
+0.007 CPU secs total, 0.007 CPU secs max
+elapsed time = 0 seconds
