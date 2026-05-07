@@ -1,32 +1,23 @@
-#show how it works
-
-the dog devours bones
-
-# unification failure, subject-verb agreement (consistency)
-
-the dogs devours bones
-
-# coherence violation
-
-the dog appears bones 
-
-# completeness violation
-
-the dog devours 
-
-# missing PRED value, completeness violation
-
-the dog devours a bone
-
-#missing rules, unknown words
-
-the dog devours bones in the park
-
-#new verbs --- intrans
+a dog devours the bones
 
 a dog sleeps
 
-#new verbs -- trans
+the dog chases a bone
 
-a dog chases a bone
+the girls like the cake
 
+the gorillas see the girl
+
+the bone was devoured by a dog
+
+a boy was chased by the gorilla
+
+the boys like the girl
+
+a girl likes the boy
+
+the boy slept
+
+the cats devoured the mice
+
+a cat eats the mouse

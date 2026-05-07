@@ -38,7 +38,7 @@ PRES3SG = (^ TENSE) = pres
           (^ SUBJ PERS) = 3
           (^ SUBJ NUM) = sg.
 
-PRESNON3SG = { (^ TENSE) = pres
+PRES-NON3SG = { (^ TENSE) = pres
                 (^ SUBJ PERS) = 1
                 (^ SUBJ NUM) = sg
               | (^ TENSE) = pres
@@ -73,18 +73,18 @@ PAST =  { (^ TENSE) = past
           (^ SUBJ PERS) = 3
           (^ SUBJ NUM) = pl }.
 
-PAST3PSG_BE = (^ TENSE) = past
+PAST-BE-3SG = (^ TENSE) = past
           (^ SUBJ PERS) = 3
           (^ SUBJ NUM) = sg.
 
-MOOD_IND = (^ MOOD) = indicative.
+MOOD-IND = (^ MOOD) = indicative.
 
-ASP_SIMP = (^ ASPECT) = simple.
+ASPECT-SIMP = (^ ASPECT) = simple.
 
-3RD_PSG = (^ NUM) = sg
+SG-3PERS = (^ NUM) = sg
            (^ PERS) = 3.
 
-3RD_PPL = (^ NUM) = pl
+PL-3PERS = (^ NUM) = pl
           (^ PERS) = 3.
 
 CN = (^ DEF).
@@ -102,7 +102,9 @@ PASS(FRAME) = { FRAME
 		(^ PARTICIPLE) =c past
 		(^ OBJ)-->(^ SUBJ)
 		{ (^ SUBJ)-->(^ OBL-AG)
-		| (^ SUBJ)--> NULL } }.
+		| (^ SUBJ)--> NULL
+		}
+		}.
 
 
 ----
@@ -111,145 +113,143 @@ DEMO ENGLISH LEXICON (1.0)
 
 bones 	  N * (^ PRED) = 'bone'
               @CN
-	          @3RD_PPL.
+	      @PL-3PERS.
 
 bone 	  N * (^ PRED) = 'bone'
               @CN 
-	          @3RD_PSG. 
+	      @SG-3PERS. 
 
 cat 	  N * (^ PRED) = 'cat'
               @CN
-              @3RD_PSG.
+              @SG-3PERS.
 
 cats 	  N * (^ PRED) = 'cat'
               @CN
-	          @3RD_PPL.
+	      @PL-3PERS.
 
 cake 	  N * (^ PRED) = 'cake'
               @CN
-              @3RD_PSG.
+              @SG-3PERS.
 
 gorillas  N * (^ PRED) = 'gorilla'
-	          @3RD_PPL.
+              @CN
+	      @PL-3PERS.
 
 gorilla N * (^ PRED)='gorilla'
             @CN
-            @3RD_PSG.
+            @SG-3PERS.
 
-dog  N * (^ PRED) = 'dog'
-         @CN
-	     @3RD_PSG.
+dog 	  N * (^ PRED) = 'dog'
+              @CN
+	      @SG-3PERS. 
 
 dogs 	  N * (^ PRED) = 'dog'
-             @CN
-	          @3RD_PPL. 
-
-girl  N * (^ PRED)='girl'
               @CN
-              @3RD_PSG.
+	      @PL-3PERS. 
 
-girls  N * (^ PRED)='girl'
-              @3RD_PPL.
-
-boy   N * (^ PRED)='boy'
+girl N * (^ PRED)='girl'
               @CN
-              @3RD_PSG.
+              @SG-3PERS.
 
-boys   N * (^ PRED)='boy'
-              @3RD_PPL.
-
-mouse   N * (^ PRED)='mouce'
+boy N * (^ PRED)='boy'
               @CN
-              @3RD_PSG.
+              @SG-3PERS.
 
-mice   N * (^ PRED) = 'mouse'
-	       @3RD_PPL.
-
-treat  N * (^ PRED)='treat'
+mouse N * (^ PRED)='mouce'
               @CN
-              @3RD_PSG.
+              @SG-3PERS.
+
+mice 	  N * (^ PRED) = 'mouse'
+              @CN
+	      @PL-3PERS.
+
+treat N * (^ PRED)='treat'
+              @CN
+              @SG-3PERS.
 
 banana N * (^ PRED)='banana'
               @CN
-              @3RD_PSG.
+              @SG-3PERS.
 
 bananas N * (^ PRED) = 'banana'
-	          @3RD_PPL. 
+              @CN
+	      @PL-3PERS.
 
-was   AUX * "(^ PRED) = 'be'"
-              @MOOD_IND
-              @PAST3PSG_BE
-              (^ PARTICIPLE) =c past.
 
-devours   V * @MOOD_IND
-              @ASP_SIMP
-              @PRES3SG
-	          @(TRANS devour).
+devours   V * 
+	    @MOOD-IND
+            @ASPECT-SIMP
+            @PRES3SG
+	    @(TRANS devour).
 
-devoured    V* (^ PARTICIPLE) = past
-               @(TRANS devour).
+appears   V * 
+	    @MOOD-IND
+            @ASPECT-SIMP
+            @PRES3SG
+	    @(INTRANS appear).
 
-appears   V * @MOOD_IND
-              @ASP_SIMP
-              @PRES3SG
-	          @(INTRANS appear).
+sleeps    V *
+	    @MOOD-IND
+            @ASPECT-SIMP
+            @PRES3SG
+	    @(INTRANS sleep).
 
-sleeps    V * @MOOD_IND
-              @ASP_SIMP
-              @PRES3SG
-	          @(INTRANS sleep).
+chase     V*
+            @MOOD-IND
+            @ASPECT-SIMP
+            @PRES-NON3SG
+            @(TRANS chase).
 
-chase     V* @MOOD_IND
-             @ASP_SIMP
-             @PRESNON3SG 
-             @(TRANS chase).
+chases   V * 
+	    @MOOD-IND
+            @ASPECT-SIMP
+            @PRES3SG
+	    @(TRANS chase).
 
-chases   V * @MOOD_IND
-             @ASP_SIMP
-             @PRES3SG
-	         @(TRANS chase). 
-
-like     V* @MOOD_IND
-             @ASP_SIMP
-             @PRESNON3SG 
-             @(TRANS like).
-
-likes   V * @MOOD_IND
-             @ASP_SIMP
-             @PRES3SG
-	         @(TRANS like). 
-
-chased    V* (^ PARTICIPLE) = past
-             @(TRANS chase).
-
-eat     V*  @MOOD_IND
-            @ASP_SIMP
-            @PRESNON3SG 
+eat     V*
+            @MOOD-IND
+            @ASPECT-SIMP
+            @PRES-NON3SG
             @(OPT-TRANS eat).
 
-eats   V *  @MOOD_IND
-            @ASP_SIMP
+eats   V * 
+	    @MOOD-IND
+            @ASPECT-SIMP
             @PRES3SG
-	        @(OPT-TRANS eat).
-            
-eaten   V*  (^ PARTICIPLE) = past
-            @(TRANS eat).
-           
-see     V*  @MOOD_IND
-            @ASP_SIMP
-            @PRESNON3SG 
+	    @(OPT-TRANS eat).
+
+see     V*
+            @MOOD-IND
+            @ASPECT-SIMP
+            @PRES-NON3SG
             @(OPT-TRANS see).
+
+was   AUX * "(^ PRED) = 'be'"
+            @MOOD-IND
+            @PAST-BE-3SG
+            (^ PARTICIPLE) =c past.
 
 seen    V* (^ PARTICIPLE) = past
            @(TRANS see).
 
-saw     V*  @MOOD_IND
+eaten    V* (^ PARTICIPLE) = past
+           @(TRANS eat).
+
+chased    V* (^ PARTICIPLE) = past
+           @(TRANS chase).
+
+devoured    V* (^ PARTICIPLE) = past
+           @(TRANS devour).
+
+saw     V*
+            @MOOD-IND
             @PAST
             @(OPT-TRANS see).
 
-slept     V* @MOOD_IND
-             @PAST
-             @(INTRANS sleep).
+slept     V*
+            @MOOD-IND
+            @PAST
+            @(INTRANS sleep).
 
 the  D *  (^ DEF) = +.
 
