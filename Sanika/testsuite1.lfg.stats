@@ -1,0 +1,48 @@
+((1) (0 0.005 11) (4 words))
+((2) (0 0.002 11) (4 words))
+((3) (0 0.002 0) (4 words))
+((4) (0 0.002 8) (3 words))
+((5) (1 0.002 13) (5 words))
+((6) (0 0.002 0) (7 words))
+((7) (1 0.002 8) (3 words))
+((8) (0 0.001 0) (5 words))
+((9) (1 0.002 8) (3 words))
+((10) (1 0.002 13) (5 words))
+((11) (0 0.002 13) (5 words))
+((12) (1 0.001 8) (3 words))
+((13) (1 0.002 13) (5 words))
+((14) (0 0.001 0) (5 words))
+((15) (0 0.001 0) (3 words))
+((16) (0 0.001 0) (3 words))
+((17) (0 0.001 0) (3 words))
+((18) (2 0.002 18) (7 words))
+((19) (2 0.001 10) (4 words))
+((20) (2 0.001 10) (4 words))
+((21) (2 0.001 18) (7 words))
+((22) (0 0.001 0) (8 words))
+((23) (0 0.001 0) (4 words))
+
+XLE release of Sep 25, 2017 21:02.
+Grammar = /Users/sanikavinod/Desktop/xle/gramm.lfg.txt.
+Grammar last modified on May 08, 2026 12:27.
+Host machine is Sanikas-MacBook-Air.local.
+23 sentences, 0 errors, 0 mismatches
+13 sentences had 0 parses
+10 good sentences
+6 sentences had exactly one grammatical parse
+timeout = 15
+max_xle_scratch_storage = 100 MB
+prune_subtree_location = 1
+max_new_events_per_graph_when_skimming = 500
+maximum raw subtrees per sentence = 20 (#18)
+maximum event count per sentence = 777
+average event count per graph = 33.451
+tokens = 6.4%, morph = 6.8%, multiword = 0.3%, lex = 14.4%, chart = 54.8%,
+unifier = 13.8%, completer = 1.3%, solver = 2.2%, output = 0.0%
+max_alloc_mem = 83.76 MB
+0.037 CPU secs total, 0.005 CPU secs max
+elapsed time = 1 seconds
+  range parsed failed  words   seconds  subtrees     optimal
+   1-10     10     13   4.60     0.002     11.90        1.40
+    all     10     13   4.60     0.002     11.90        1.40
+0.01 of the variance in seconds is explained by the number of subtrees
