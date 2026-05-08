@@ -1,63 +1,65 @@
 #1 - Intransitive verb
 
-the cat sleeps
+the cat sleeps (1 0.009 8)
 
 #2 - Transitive verb (3rd person singular)
 
-the dog devours the bone
+the dog devours the bone (1 0.003 13)
 
 #3 - Transitive verb (3rd person plural)
 
-the cats chase a mouse
+the cats chase a mouse (1 0.002 13)
 
 #4 - The verb "eat" as intransitive
 
-the dog eats
+the dog eats (1 0.001 8)
 
 #5 - The verb "eat" as transitive
 
-the cats eat a treat
+the cats eat a treat (1 0.001 13)
 
 #6 - Subject and verb don't agree
 
-the girl see the gorilla
+the girl see the gorilla (0 0.001 13)
 
 #7 - I suppose because there is no determiner
 
-cat chases dogs
+cat chases dogs (0 0.001 0)
 
 #8 - Subject and verb don't agree
 
-gorilla devour bananas
+gorilla devour bananas (0 0.001 0)
 
 #9 - Subject and verb don't agree
 
-gorillas devours banana
+gorillas devours banana (0 0.001 0)
 
 #10 - Passive structure with agent
 
-the girl was seen by the gorilla
+the girl was seen by the gorilla (1 0.001 18)
 
 #11 - Passive structure without agent
 
-the cake was eaten
+the cake was eaten (1 0.001 10)
 
 #12 - Passive structure without agent
 
-the cat was chased
+the cat was chased (1 0.001 10)
 
 #13 - Passive structure with agent
 
-the bone was devoured by a dog
+the bone was devoured by a dog (1 0.001 18)
 
 #14 - Passive structure without past participle
 
-the girl was saw by the gorilla
+the girl was saw by the gorilla (0 0.001 0)
 
 #15 - Passive structure without past participle
 
-the dog was slept
+the dog was slept (0 0.001 0)
 
 #16 - The lexeme "was" doesn't work as a verb in its past tense but as an auxiliary
 
-the girl was a banana
+the girl was a banana (0 0.001 0)
+
+# 16 sentences, 0.026 CPU secs total, 0.009 CPU secs max (05/07/26)
