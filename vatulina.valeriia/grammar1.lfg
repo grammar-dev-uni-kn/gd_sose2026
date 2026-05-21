@@ -14,21 +14,39 @@ DEMO   ENGLISH   CONFIG (1.0)
 
 DEMO   ENGLISH   RULES (1.0)
 
-   S --> NP: (^ SUBJ) = !
-	     (! CASE) = nom;
- 	 VP: ^= !.
+   S -->	NP:	(^ SUBJ) = !
+	    		(! CASE) = nom;
+ 			VP: ^= !.
 
-   VP --> (AUX)
-	V: ^=!;
-	(NP: (^ OBJ) = !
-	     (! CASE) = acc)
-	(PP: (^ OBL-AG) = !).
+   VP -->	(AUX)
+			V:^=!;
+			(NP: (^ OBJ) = ! "optional direct object"
+	    	(! CASE) = acc)
+			(NP: (^ OBJ2) = !) "restricted object of d-transitives"
+			PP*: { ! $	(^ ADJUNCT) "PPs can be adjuncts"
+						(! PTYPE) =c sem "only semantic PPs here"
+						|
+						(^ OBL) = ! "or a a general oblique"
+						};
+			(PP: (^ OBL-TO) = !
+				 (! PFORM) =c to)
+			(PP: (^ OBL-AG) = !
+				 (! PFORM) =c by).
 
-   NP --> (D)  "can leave out ^=!"
- 	  N.
+   NP -->	(D)
+   			AP*: ! $ (^ ADJUNCT);
+ 			N
+			PP*: ! $ (^ ADJUNCT)
+					 (! PTYPE) =c sem.
 
-   PP --> P
-          NP.
+   PP --> { P: ^ = ! "head of PP" "semantic"
+   			(! PTYPE) =c sem;
+			NP: (^ OBJ) = !
+			(! CASE) = acc;
+			|
+			P: ^ = ! "head of PP" "non-semantic"
+			(! PTYPE) =c nosem;
+			NP}.
 ----
 
 DEMO ENGLISH TEMPLATES (1.0)
@@ -36,22 +54,27 @@ DEMO ENGLISH TEMPLATES (1.0)
 TRANS(P) = @(PASS (^ PRED) = 'P<(^ SUBJ) (^ OBJ)>').
 
 INTRANS(P) = (^ PRED) = 'P<(^ SUBJ)>'
-	     (^ PASSIVE) = -.
+	    	 (^ PASSIVE) = -.
 
 OPT-TRANS(P) = { @(INTRANS P) | @(TRANS P) }.
 
+DI-TRANS(P) = @(PASS @(DAT-SHIFT (^ PRED) = 'P<(^ SUBJ) (^ OBJ) (^ OBL-TO)>')).
+
+INTRANS-OBL(P) = (^ PRED) = 'P<(^ SUBJ)(^ OBL)>'
+				 (^ OBL PTYPE) = nosem.
+
 3PER-SG = (^ SUBJ PERS) = 3
-	  (^ SUBJ NUM) = sg.
+	  	  (^ SUBJ NUM) = sg.
 
 3PER-PL = (^ SUBJ PERS) = 3
-	  (^ SUBJ NUM) = pl.
+		  (^ SUBJ NUM) = pl.
 
 CN-SG = (^ NUM) = sg
-	(^ DEF)
-	(^ PERS) = 3.
+		(^ DEF)
+		(^ PERS) = 3.
 
 CN-PL = (^ NUM) = pl
-	(^ PERS) = 3.
+		(^ PERS) = 3.
 
 IND-MD = (^ MOOD) = indicative.
 
@@ -60,13 +83,32 @@ PRES-TNS = (^ TENSE) = present.
 PAST-TNS = (^ TENSE) = past.
 
 PAST-PRT = (^ PARTICIPLE) = past
-	   (^ CHECK _AUX)= +.
+	   	   (^ CHECK _AUX)= +.
+
+PREP(P) = 
+		{	(^ PTYPE) = sem
+			(^ PRED) = 'P<(^ OBJ)>'
+	  		| 	
+			(^ PTYPE) = nosem
+	    	(^ PFORM) = P
+		}.
+
+PREP-SEM(P) = (^ PTYPE) = sem
+              (^ PRED) = 'P<(^ OBJ)>'.
+
+PREP-NOSEM(P) = (^ PTYPE) = nosem
+                (^ PFORM) = P.
+
+DAT-SHIFT (FRAME) = {FRAME
+		    | FRAME
+		    (^ OBJ) --> (^OBJ2)
+		    (^ OBL-TO) --> (^OBJ)}.
 
 PASS (FRAME) = { FRAME
 		   (^ PASSIVE) = -
-		 | FRAME "passive"
+		   | FRAME "passive"
 		   (^ PASSIVE) = +
-		   (^ PARTICIPLE) =c past
+		   (^ PARTICIPLE) =c past "only past participle allowed"
 		   (^ OBJ) --> (^ SUBJ)
 		   { (^ SUBJ) --> (^ OBL-AG)
 		   | (^ SUBJ) --> NULL
@@ -76,116 +118,208 @@ PASS (FRAME) = { FRAME
 
 DEMO ENGLISH LEXICON (1.0)
 
-banana	N * (^ PRED) = 'banana'
-	    @CN-SG.
+"proper names"
 
-bananas	N * (^ PRED) = 'banana'
-	    @CN-PL.
+Alex		N * (^ PRED) = 'Alex'.
 
-bone	N * (^ PRED) = 'bone' 
-	    @CN-SG.
+Jordan		N * (^ PRED) = 'Jordan'.
 
-bones	N * (^ PRED) = 'bone'
-	    @CN-PL.
+Sam			N * (^ PRED) = 'Sam'.
 
-boy	N * (^ PRED) = 'boy'
-	    @CN-SG.
+"nouns"
 
-cake	N * (^ PRED) = 'cake'
-	    @CN-SG.
+banana		N * (^ PRED) = 'banana'
+	    		@CN-SG.
 
-cat	N * (^ PRED) = 'cat'
-	    @CN-SG.
+bananas		N * (^ PRED) = 'banana'
+	    		@CN-PL.
 
-cats	N * (^ PRED) = 'cat'
-	    @CN-PL.
+bench		N * (^ PRED) = 'bench'
+				@CN-SG.
 
-dog	N * (^ PRED) = 'dog'
-	    @CN-SG.
+book		N * (^ PRED) = 'book'
+	    		@CN-SG.
 
-dogs	N * (^ PRED) = 'dog'
-	    @CN-PL.
+bone		N * (^ PRED) = 'bone' 
+	    		@CN-SG.
 
-girl	N * (^ PRED) = 'girl'
-	    @CN-SG.
+bones		N * (^ PRED) = 'bone'
+	    		@CN-PL.
 
-gorilla	N * (^ PRED) = 'gorilla'
-	    @CN-SG.
+boy			N * (^ PRED) = 'boy'
+	    		@CN-SG.
 
-mouse	N * (^ PRED) = 'mouse'
-	    @CN-SG.
+cake		N * (^ PRED) = 'cake'
+				@CN-SG.
 
-treat	N * (^ PRED) = 'treat'
-	    @CN-SG.
+cat			N * (^ PRED) = 'cat'
+	    		@CN-SG.
 
-chase	V * @(TRANS chase)
-	    @PRES-TNS
-	    @3PER-PL.
+cats		N * (^ PRED) = 'cat'
+	    		@CN-PL.
 
-chases	V * @(TRANS chase)
-	    @PRES-TNS
-	    @3PER-SG.
+dog			N * (^ PRED) = 'dog'
+	    		@CN-SG.
 
-chased	V * @(TRANS chase)
-	    { @PAST-PRT
-	    | @PAST-TNS}.
+dogs		N * (^ PRED) = 'dog'
+	    		@CN-PL.
 
-devour	V * @(TRANS devour)
-	    @PRES-TNS
-	    @3PER-PL.
+girl		N * (^ PRED) = 'girl'
+	    		@CN-SG.
 
-devours	V * @(TRANS devour)
-	    @PRES-TNS
-	    @3PER-SG.
+gorilla		N * (^ PRED) = 'gorilla'
+	    		@CN-SG.
 
-devoured V * @(TRANS devour)
-	    { @PAST-PRT
-	    | @PAST-TNS}.
+gorillas	N * (^ PRED) = 'gorilla'
+	    		@CN-PL.
 
-eats	V * @(OPT-TRANS eat)
-	    @PRES-TNS
-	    @3PER-SG.
+monkey		N * (^ PRED) = 'monkey'
+				@CN-SG.
 
-eat	V * @(OPT-TRANS eat)
-	    @PRES-TNS
-	    @3PER-PL.
+mouse		N * (^ PRED) = 'mouse'
+				@CN-SG.
 
-ate	V * @(OPT-TRANS eat)
-	    @PAST-TNS.
+table		N * (^ PRED) = 'table'
+				@CN-SG.
 
-eaten	V * @(OPT-TRANS eat)
-	    @PAST-PRT.
+telescope	N * (^ PRED) = 'telescope'
+				@CN-SG.
 
-see	V * @(TRANS see)
-	    @PRES-TNS
-	    @3PER-PL.
+treat		N * (^ PRED) = 'treat'
+	    		@CN-SG.
 
-sees	V * @(TRANS see)
-	    @PRES-TNS
-	    @3PER-SG.
+zookeeper	N * (^ PRED) = 'zookeeper'
+				@CN-SG.
 
-saw	V * @(TRANS see)
-	    @PAST-TNS.
+waiter		N * (^ PRED) = 'waiter'
+				@CN-SG.
 
-seen	V * @(TRANS see)
-	    @PAST-PRT.
+"verbs"
 
-sleep	V * @(INTRANS sleep)
-	    @PRES-TNS
-	    @3PER-PL.
+argued		V * @(INTRANS-OBL argue)
+				(^ OBL PFORM) =c with
+				@PAST-TNS.
 
-sleeps	V * @(INTRANS sleep)
-	    @PRES-TNS
-	    @3PER-SG.
+chase		V * @(TRANS chase)
+	    		@PRES-TNS
+	    		@3PER-PL.
 
-slept	V * @(INTRANS sleep)
-	    @PAST-TNS.
+chases		V * @(TRANS chase)
+	    		@PRES-TNS
+	    		@3PER-SG.
 
-the	D *  (^ DEF) = +.
+chased		V * @(TRANS chase)
+	    		{ @PAST-PRT
+	    		|
+				@PAST-TNS}.
 
-a	D *  (^ DEF) = -.
+devour		V * @(TRANS devour)
+	    		@PRES-TNS
+	    		@3PER-PL.
 
-by	P *  (^ PFORM) = by.
+devours		V * @(TRANS devour)
+	    		@PRES-TNS
+	    		@3PER-SG.
+
+devoured 	V * @(TRANS devour)
+	    		{ @PAST-PRT
+	    		|
+				@PAST-TNS}.
+
+eats		V * @(OPT-TRANS eat)
+	    		@PRES-TNS
+	    		@3PER-SG.
+
+eat			V * @(OPT-TRANS eat)
+	    		@PRES-TNS
+	    		@3PER-PL.
+
+ate			V * @(OPT-TRANS eat)
+	    		@PAST-TNS.
+
+eaten		V * @(OPT-TRANS eat)
+				@PAST-PRT.
+
+give		V * @(DI-TRANS give)
+				@PRES-TNS
+				@3PER-PL.
+
+gives		V * @(DI-TRANS give)
+				@PRES-TNS
+				@3PER-SG.
+
+given		V * @(DI-TRANS give)
+				@PAST-PRT.
+
+gave		V * @(DI-TRANS give)
+				@PAST-TNS.
+
+see			V * @(TRANS see)
+	    		@PRES-TNS
+	    		@3PER-PL.
+
+sees		V * @(TRANS see)
+	    		@PRES-TNS
+	    		@3PER-SG.
+
+saw			V * @(TRANS see)
+				@PAST-TNS.
+
+seen		V * @(TRANS see)
+	    		@PAST-PRT.
+
+sit 		V * @(INTRANS sit)
+	    		@PRES-TNS
+	    		@3PER-PL.
+
+sat			V * @(INTRANS sit)
+	    		@PAST-TNS.
+
+sleep		V * @(INTRANS sleep)
+	    		@PRES-TNS
+	    		@3PER-PL.
+
+sleeps		V * @(INTRANS sleep)
+				@PRES-TNS
+	    		@3PER-SG.
+
+slept		V * @(INTRANS sleep)
+	    		@PAST-TNS.
+
+talked		V * {@(INTRANS talk) 
+				| 
+				@(INTRANS-OBL talk)
+				(^ OBL PFORM) =c to}
+				@PAST-TNS.
+
+waited		V * {@(INTRANS wait) 
+				| 
+				@(INTRANS-OBL wait)
+				(^ OBL PFORM) =c on}
+				@PAST-TNS.
+
+"determiners"
+
+the		D *	(^ DEF) = +.
+
+a		D *	(^ DEF) = -
+			(^ NUM) = sg.
+
+"prepositions"
+
+by		P *	@(PREP-NOSEM by).
+
+to		P *	@(PREP-NOSEM to).
+
+with	P * {@(PREP-SEM with)
+			|
+			@(PREP-NOSEM with)}.
+
+on 		P * {@(PREP-SEM on)
+			|
+			@(PREP-NOSEM on)}.
+
+"auxiliaries"
 
 was	AUX * @PAST-TNS
 	      (^ PASSIVE) = +
