@@ -1,6 +1,6 @@
 #correct sentence 1 - intransitive verb
 
-the cat sleeps (1 0.008 8)
+the cat sleeps (1 0.010 8)
 
 #correct sentence 2 - transitive verb
 
@@ -16,7 +16,7 @@ the dog eats (1 0.002 8)
 
 #correct sentence 5 - optionally transitive verb
 
-the cats eat a treat (1 0.002 13)
+the cats eat a treat (1 0.001 13)
 
 #incorrect sentence 6 - subject-verb agreement violation
 
@@ -58,4 +58,80 @@ the girl was saw by the gorilla (0 0.001 0)
 
 the dog was slept (0 0.001 0)
 
-# 15 sentences, 0.027 CPU secs total, 0.008 CPU secs max (05/08/26)
+#correct sentence 16
+
+the girl gave the dog a bone (1 0.001 18)
+
+#correct sentence 17
+
+the girl gives the gorilla bananas (1 0.001 16)
+
+#correct sentence 18
+
+gorillas devour bananas (1 0.001 9)
+
+#correct sentence 19
+
+a gorilla devours bananas (1 0.001 11)
+
+#incorrect sentence 20
+
+the girl give the gorilla bananas (0 0.001 16)
+
+#incorrect sentence 21
+
+gorillas devours bananas (0 0.001 9)
+
+#incorrect sentence 22
+
+gorilla devour bananas (0 0.001 0)
+
+#incorrect sentence 23
+
+gorillas devours banana (0 0.001 0)
+
+#correct sentence 24
+
+the girl gives a bone to the dog (1 0.001 21)
+
+#correct sentence 25
+
+the zookeeper gave a banana to the gorilla (1 0.001 21)
+
+#correct sentence 26
+
+the dog was given a bone by the girl (1 0.002 23)
+
+#correct sentence 27
+
+a bone was given to the dog by the girl (1 0.002 26)
+
+#incorrect sentence 28
+
+the girl gave to the dog a bone (0 0.001 0)
+
+#incorrect sentence 29
+
+the dog was given by the girl a bone (0 0.001 0)
+
+#correct sentence 30
+
+the waiter waited on the table (2 0.002 19)
+
+#correct sentence 31
+
+Jordan talked to Sam (1 0.001 12)
+
+#correct sentence 32
+
+Alex argued with a gorilla (1 0.001 17)
+
+#correct sentence 33
+
+Sam saw a monkey with a telescope (2 0.002 26)
+
+#correct sentence 34
+
+the dog sat on the bench with a book (2 0.002 37)
+
+# 34 sentences, 0.055 CPU secs total, 0.010 CPU secs max (05/21/26)
