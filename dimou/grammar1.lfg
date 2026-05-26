@@ -8,12 +8,14 @@ DEMO   ENGLISH   CONFIG (1.0)
   SEMANTICFUNCTIONS    ADJUNCT  TOPIC FOCUS POSS STANDARD.
   NONDISTRIBUTIVES    NUM PERS CONJ-FORM.
   EPSILON   e.
-  OPTIMALITYORDER NOGOOD.
+  OPTIMALITYORDER NOGOOD PPadj +PPattach.
+  GENOPTIMALITYORDER NOGOOD .
 
 ----
 
 DEMO   ENGLISH   RULES (1.0)
 
+ 
    S --> NP: (^ SUBJ)=!
 	     (! CASE)=nom;
  	 VP: ^=!.
@@ -49,14 +51,18 @@ DEMO   ENGLISH   RULES (1.0)
 	  AP*: ! $ (^ ADJUNCT);     "introducing adjectives in sets"
 	  N                          "head of NP"
 	  PP*: ! $ (^ ADJUNCT)      "PPs modifying NPs"
-	  (! PTYPE) =c sem.         "have to be semantic"
-
+	  (! PTYPE) =c sem          "have to be semantic"
+          @(OT-MARK PPattach).
  
  
 
 ----
 
 DEMO ENGLISH TEMPLATES (1.0)
+
+  OT-MARK(_mark) =                   "assigns an OT mark"
+                 _mark $ o::*.
+
 
 "Passive lexical rule"
 PASS(FRAME) = { FRAME                   "no passive, just give back subcat frame"
@@ -315,7 +321,8 @@ Jordan    N * (^PRED) = 'Jordan'
 
 Sam       N * (^PRED)= 'Sam'
 		(^NUM) = sg
-		(^ PERS) = 3.
+		(^ PERS) = 3
+	      ~[(^DEF)].      "negative constraint" 
 
 table     N * @(CN table).
 
