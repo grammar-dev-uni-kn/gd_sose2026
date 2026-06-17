@@ -8,7 +8,9 @@ DEMO   ENGLISH   CONFIG (1.0)
   SEMANTICFUNCTIONS    ADJUNCT  TOPIC FOCUS POSS STANDARD.
   NONDISTRIBUTIVES    NUM PERS CONJ-FORM.
   EPSILON   e.
-  OPTIMALITYORDER NOGOOD.
+  EPSILON   e.
+  OPTIMALITYORDER NOGOOD  PPadj +PPattach.
+  GENOPTIMALITYORDER NOGOOD .
 
 ----
 
@@ -26,17 +28,24 @@ DEMO   ENGLISH   RULES (1.0)
            
           PP*: { ! $ (^ ADJUNCT) 	"PPs can be adjuncts"
                      (! PTYPE) =c sem 	"only semantic PPs here"
+                     @(OT-MARK PPadj)   "disprefer adjunct PP"
                        | 
                       (^ OBL) = ! 	"or a a general oblique"
                         };
           (PP: (^ OBL-TO) = !)   	"oblique beneficiary of di-trn"
-          (PP: (^ OBL-AG) = !).  	"oblique agent of passive"
+          (PP: (^ OBL-AG) = !)  	"oblique agent of passive"
+          Adv*: ! $ (^ ADJUNCT).
 
-   NP --> (D)  			 	"optional determiner, can leave out ^=!"
-          AP*: ! $ (^ ADJUNCT);		"introducing adjectives in sets"
- 	  N				"head NP"
-          PP*: ! $ (^ ADJUNCT)		"PPs modifying NPs"
-                   (! PTYPE) =c sem.	"have to be semantic"
+   NP --> {(D)	 			"optional determiner, can leave out ^=!"
+           AP*: ! $ (^ ADJUNCT);	"introducing adjectives in sets"	
+ 	   N				"head NP"
+           PP*: ! $ (^ ADJUNCT)		"PPs modifying NPs"
+                   (! PTYPE) =c sem	"have to be semantic"
+                  @(OT-MARK PPattach)	"prefer PPs attached to NPs"
+          |PRON}.
+
+   AP --> Adv*: ! $ (^ ADJUNCT);
+          A.
 
    PP --> { P: ^ = !			"head of PP"
                 (! PTYPE) =c sem;	"semantic type, Adjunct"
@@ -61,7 +70,9 @@ CNP(P) = (^ PRED)='P'
 
 "proper noun"
 PN(P) = (^ PRED) ='P' 
-        (^ NUM) = sg.
+        (^ NUM) = sg
+        (^ PERS) = 3
+      ~[(^ DEF)].
 
 "present 3rd person singular"
 PRES3SG = (^ TENSE) = pres
@@ -70,12 +81,16 @@ PRES3SG = (^ TENSE) = pres
           (^ SUBJ PERS) = 3 
           (^ SUBJ NUM) = sg.
 
-"present 3rd person plural"
-PRES3PL = (^ TENSE) = pres
-          (^ ASPECT) = simple
-          (^ MOOD) = ind
-          (^ SUBJ PERS) = 3 
-          (^ SUBJ NUM) = pl.
+"present"
+PRES = (^ TENSE) = pres
+       (^ ASPECT) = simple
+       (^ MOOD) = ind
+      {(^ SUBJ PERS) = 1
+      |(^ SUBJ PERS) = 2}
+      {(^ SUBJ NUM) = sg
+      |(^ SUBJ NUM) = pl}
+      {(^ SUBJ PERS) = 3
+       (^ SUBJ NUM) = pl}.
 
 "past all persons"
 PAST = (^ TENSE) = past
@@ -124,6 +139,9 @@ PREP(P) = { (^ PRED) = 'P<(^OBJ)>'
           | (^ PTYPE) = nosem
             (^ PFORM) = P}.
 
+"assigns an OT mark"
+OT-MARK(_mark) = _mark $ o::*.
+
 ----
 
 DEMO ENGLISH LEXICON (1.0) 
@@ -133,7 +151,138 @@ DEMO ENGLISH LEXICON (1.0)
 
 the  	  D *  (^ DEF) = +.
 
-a   	  D *  (^ DEF) = -.
+a   	  D *  (^ DEF) = -
+               (^ NUM) = sg.	"this indefinite only marks singulars"
+
+my 	  D *  (^ PRED) = 'I'
+               (^ NUM) = sg
+               (^ PERS) = 1
+	       (^ PRON-TYPE) = poss.
+
+your 	  D * (^ PRED) = 'you'
+		{(^ NUM) = sg
+                |(^ NUM) = pl}
+                 (^ PERS) = 2
+		 (^ PRON-TYPE) = poss
+                 (^ HUMAN) = +.
+
+his 	  D * (^ PRED) = 'he'
+		 (^ NUM) = sg
+                 (^ PERS) = 3
+		 (^ PRON-TYPE) = poss
+                 (^ HUMAN) = +.
+
+
+its 	  D * (^ PRED) = 'it'
+		 (^ NUM) = sg
+                 (^ PERS) = 3
+		 (^ PRON-TYPE) = poss
+                 (^ HUMAN) = -.
+
+
+our 	  D * (^ PRED) = 'we'
+		 (^ NUM) = pl
+                 (^ PERS) = 1
+		 (^ PRON-TYPE) = poss
+                 (^ HUMAN) = +.
+
+their 	  D * (^ PRED) = 'they'
+		 (^ NUM) = pl
+                 (^ PERS) = 3
+		 (^ PRON-TYPE) = poss
+                 (^ HUMAN) = +.
+
+
+"personal pronouns"
+
+I 	  PRON * (^ PRED) = 'I'
+		 (^ NUM) = sg
+                 (^ PERS) = 1
+		 (^ PRON-TYPE) = pers
+                 (^ HUMAN) = +
+                 (^ CASE) = nom.
+
+you 	  PRON * (^ PRED) = 'you'
+		{(^ NUM) = sg
+                |(^ NUM) = pl}
+                 (^ PERS) = 2
+		 (^ PRON-TYPE) = pers
+                 (^ HUMAN) = +
+                {(^ CASE) = nom
+                |(^ CASE) = acc}. 
+
+he 	  PRON * (^ PRED) = 'he'
+		 (^ NUM) = sg
+                 (^ PERS) = 3
+		 (^ PRON-TYPE) = pers
+                 (^ HUMAN) = +
+                 (^ CASE) = nom. 
+
+she 	  PRON * (^ PRED) = 'she'
+		 (^ NUM) = sg
+                 (^ PERS) = 3
+		 (^ PRON-TYPE) = pers
+                 (^ HUMAN) = +
+                 (^ CASE) = nom. 
+
+it 	  PRON * (^ PRED) = 'it'
+		 (^ NUM) = sg
+                 (^ PERS) = 3
+		 (^ PRON-TYPE) = pers
+                 (^ HUMAN) = -
+                {(^ CASE) = nom
+                |(^ CASE) = acc}.
+
+we 	  PRON * (^ PRED) = 'we'
+		 (^ NUM) = pl
+                 (^ PERS) = 1
+		 (^ PRON-TYPE) = pers
+                 (^ HUMAN) = +
+                 (^ CASE) = nom. 
+
+they 	  PRON * (^ PRED) = 'they'
+		 (^ NUM) = pl
+                 (^ PERS) = 3
+		 (^ PRON-TYPE) = pers
+                 (^ HUMAN) = +
+                 (^ CASE) = nom. 
+
+me 	  PRON * (^ PRED) = 'I'
+		 (^ NUM) = sg
+                 (^ PERS) = 3
+		 (^ PRON-TYPE) = pers
+                 (^ HUMAN) = +
+                 (^ CASE) = acc.
+
+her 	  PRON * (^ PRED) = 'she'
+		 (^ NUM) = sg
+                 (^ PERS) = 3
+		{(^ PRON-TYPE) = pers
+                 (^ CASE) = acc
+                |
+                 (^ PRON-TYPE) = poss} 
+                 (^ HUMAN) = +.
+
+him 	  PRON * (^ PRED) = 'he'
+		 (^ NUM) = sg
+                 (^ PERS) = 3
+		 (^ PRON-TYPE) = pers
+                 (^ HUMAN) = +
+                 (^ CASE) = acc.
+
+us 	  PRON * (^ PRED) = 'we'
+		 (^ NUM) = pl
+                 (^ PERS) = 1
+		 (^ PRON-TYPE) = pers
+                 (^ HUMAN) = +
+                 (^ CASE) = acc.
+
+them 	  PRON * (^ PRED) = 'they'
+		 (^ NUM) = pl
+                 (^ PERS) = 3
+		 (^ PRON-TYPE) = pers
+                 (^ HUMAN) = +
+                 (^ CASE) = acc.
 
 
 "prepositions"
@@ -148,6 +297,8 @@ in        P * @(PREP in).
 
 with      P * @(PREP with).
 
+for	  P * @(PREP for).
+
 
 "auxiliaries"
 
@@ -156,45 +307,64 @@ was       AUX * (^ TENSE) = past
                |(^ SUBJ PERS) = 3}
                 (^ SUBJ NUM) = sg.
 
+"adjectives"
+
+black		A * (^ PRED) = 'black'.
+
+hungry		A * (^ PRED) = 'hungry'.
+
+quick		A * (^ PRED) = 'quick'.
+
+small		A * (^ PRED) = 'small'.
+
+"adverbs"
+
+quickly		Adv * (^ PRED) = 'quickly'.
+
+very		Adv * (^ PRED) = 'very'.
+
 "verbs transitive"
 
-argue      V * @(TRANS argue) @PRES3PL.
+argue      V * @(TRANS argue) @PRES.
 argues     V * @(TRANS argue) @PRES3SG.
 argued     V * @(TRANS argue)
               {(^ TENSE) = past
                (^ MOOD) = ind
               | @PASTP}.
 
-chase     V * @(TRANS chase) @PRES3PL.
+chase     V * @(TRANS chase) @PRES.
 chases    V * @(TRANS chase) @PRES3SG.
 chased    V * @(TRANS chase) @PASTP.
 
-devour    V * @(TRANS devour) @PRES3PL.
+devour    V * @(TRANS devour) @PRES.
 devours   V * @(TRANS devour) @PRES3SG.
 devoured  V * @(TRANS devour)
               {(^ TENSE) = past
                (^ MOOD) = ind
               | @PASTP}.
 
-eat       V * @(OPTTRANS eat) @PRES3PL.
+eat       V * @(OPTTRANS eat) @PRES.
 eats      V * @(OPTTRANS eat) @PRES3SG.
+ate       V * @(TRANS eat)
+               (^ TENSE) = past
+               (^ MOOD) = ind.
 eaten     V * @(TRANS eat) @PASTP.
 
-see       V * @(TRANS see) @PRES3PL.
+see       V * @(TRANS see) @PRES.
 sees      V * @(TRANS see) @PRES3SG.
 saw       V * @(TRANS see)
                (^ TENSE) = past
                (^ MOOD) = ind.
 seen      V * @(TRANS see) @PASTP.
 
-talk      V * @(OPTTRANS talk) @PRES3PL.
+talk      V * @(OPTTRANS talk) @PRES.
 talks     V * @(OPTTRANS talk) @PRES3SG.
 talked    V * @(OPTTRANS talk)
               {(^ TENSE) = past
                (^ MOOD) = ind
               | @PASTP}.
 
-wait      V * @(TRANS wait) @PRES3PL.
+wait      V * @(TRANS wait) @PRES.
 waits     V * @(TRANS wait) @PRES3SG.
 waited    V * @(TRANS wait)
               {(^ TENSE) = past
@@ -203,31 +373,30 @@ waited    V * @(TRANS wait)
 
 "verbs intransitive"
 
-appear    V * @(INTRANS appear) @PRES3PL.
+appear    V * @(INTRANS appear) @PRES.
 appears   V * @(INTRANS appear) @PRES3SG.
 appeared  V * @(INTRANS appear)
               {(^ TENSE) = past
                (^ MOOD) = ind
               | @PASTP}.
 
-sleep     V * @(INTRANS sleep) @PRES3PL.
+sleep     V * @(INTRANS sleep) @PRES.
 sleeps    V * @(INTRANS sleep) @PRES3SG.
 slept     V * @(INTRANS sleep)
               {(^ TENSE) = past
                (^ MOOD) = ind
               | @PASTP}.
 
-sit       V * @(INTRANS sit) @PRES3PL.
+sit       V * @(INTRANS sit) @PRES.
 sits      V * @(INTRANS sit) @PRES3SG.
 sat       V * @(INTRANS sit)
               {(^ TENSE) = past
                (^ MOOD) = ind
               | @PASTP}.
 
-
 "verbs ditransitive"
 
-give      V * @(DITRANS give) @PRES3PL.
+give      V * @(DITRANS give) @PRES.
 gives     V * @(DITRANS give) @PRES3SG.
 gave 	  V * @(DITRANS give)
                (^ TENSE) = past
@@ -265,6 +434,9 @@ girls 	  N * @(CNP girl).
 gorilla   N * @(CNS gorilla).
 gorillas  N * @(CNP gorilla).
 
+hour      N * @(CNS hour).
+hours     N * @(CNP hour).
+
 Jordan    N * @(PN Jordan).
 
 monkey    N * @(CNS monkey).
@@ -289,5 +461,10 @@ waiters   N * @(CNP waiter).
 
 zookeeper N * @(CNS zookeeper).
 zookeepers N * @(CNP zookeeper).
+
+"punctuation"
+
+. PERIOD *.
+, COMMA *.
 
 ----
