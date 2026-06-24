@@ -1,9 +1,10 @@
 DEMO   ENGLISH   CONFIG (1.0)
   ROOTCAT   ROOT.
   FILES  common.templates.lfg.
-  LEXENTRIES   (DEMO ENGLISH).
+  LEXENTRIES   (DEMO ENGLISH)(MORPH ENGLISH).
   TEMPLATES (DEMO ENGLISH)(STANDARD COMMON). 
-  RULES   (DEMO ENGLISH).
+  RULES   (DEMO ENGLISH)(MORPH ENGLISH).
+  MORPHOLOGY (DEMO ENGLISH).
   GOVERNABLERELATIONS    SUBJ OBJ OBJ2 COMP XCOMP OBL OBL-?+.
   SEMANTICFUNCTIONS    ADJUNCT  TOPIC FOCUS POSS STANDARD.
   NONDISTRIBUTIVES    NUM PERS CONJ-FORM.
@@ -18,6 +19,9 @@ DEMO ENGLISH MORPHOLOGY (1.0)
 
 TOKENIZE:
 P!basic-parse-tok.fst G!default-gen-tokenizer.fst
+
+ANALYZE:
+english.infl.patch.full.fst
 
 
 ----
@@ -447,6 +451,11 @@ Mary N * (^ PRED) = 'named'
            @SG-3PERS
            (^ ANIM) = +.
 
+Ireland N * (^ PRED) = 'named'
+           (^ NAME) = 'Ireland'
+           @SG-3PERS
+           (^ ANIM) = -.
+
 
 "VERBS"
 
@@ -535,6 +544,21 @@ see     V*
             @PRES-NON3SG
             @(OPT-TRANS see).
 
+yawn  V-S XLE (^ PRED) = 'yawn<(^ SUBJ)>';
+      ETC.
+
+implement  V-S XLE (^ PRED) = 'implement<(^ SUBJ)(^ OBJ)>';
+           ETC.
+
+steal  V-S XLE (^ PRED) = 'steal<(^ SUBJ)(^ OBJ)>';
+       ETC.
+
+build  V-S XLE @(TRANS build);
+       ETC.
+
+house  +V-S XLE @(TRANS house);
+       ETC.
+
 give     V*
             @MOOD-IND
             @ASPECT-SIMP
@@ -563,6 +587,9 @@ chased    V* (^ PARTICIPLE) = past
 
 given    V* (^ PARTICIPLE) = past
            @(DITRANS give).
+
+built  V* (^ PARTICIPLE) = past
+          @(TRANS build).
 
 devoured    V* (^ PARTICIPLE) = past
            @(TRANS devour).
@@ -793,5 +820,57 @@ with P * @(PREP with).
 for P * @(PREP for).
 
 and CONJ * (^ CONJ-FORM) = and.
+
+----
+
+
+MORPH ENGLISH LEXICON (1.0)
+
+-unknown  ADJ-S XLE (^ PRED) = '%stem';
+          N-S XLE (^ PRED) = '%stem'
+          "@CN".
+
++Noun   N-POS XLE "@CN".
++Sg     N-NUM XLE @SG-3PERS.
++Pl     N-NUM XLE @PL-3PERS.
++Token  N-POS XLE .
++Adj    ADJ-POS XLE .
++Verb   V-POS XLE .
++Pres   TNS XLE (^ TENSE) = pres.
++3sg    PERS XLE (^ SUBJ PERS) = 3
+                 (^ SUBJ NUM) = sg.
++Non3sg PERS XLE (^ SUBJ NUM) = pl
+                 { (^ SUBJ PERS) = 1
+                 | (^ SUBJ PERS) = 2
+                 | (^ SUBJ PERS) = 3 }.
++PastTense TNS XLE @MOOD-IND @ASPECT-SIMP @PAST.
++PastBoth TNS XLE @MOOD-IND @ASPECT-SIMP @PAST.
++123SP  PERS XLE .
++PresPart ASP XLE .
++Prog   ASP XLE .
++Prop  N-POS XLE .
++Giv   N-NUM XLE .
++Fem   N-NUM XLE .
++Masc  N-NUM XLE .
++Place  N-NUM XLE .
++Country N-NUM XLE .
++Fam   N-NUM XLE .
+
+----
+
+MORPH ENGLISH RULES (1.0)
+
+V --> V-S_BASE
+      V-POS_BASE
+      { TNS_BASE
+        PERS_BASE
+      | ASP_BASE }.
+
+N --> N-S_BASE
+      N-POS_BASE
+      N-NUM_BASE.
+
+A --> ADJ-S_BASE
+      ADJ-POS_BASE.
 
 ----
