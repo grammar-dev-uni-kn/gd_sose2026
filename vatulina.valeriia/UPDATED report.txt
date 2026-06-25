@@ -1,3 +1,10 @@
+PRACTICAL WORK 6
+I have encountered several problems in this practical work.
+
+The line (^ TENSE) ~= past in the imperative rule seems redundant, and we did not have it in the original rule, but I could not find another way to ensure the sentence "gave a bone to the dog!" is ruled out as ungrammatical.
+I also tried to realise the animacy constraint similarly to the reference grammar via the OT-Mark "+AnimObl", but it did not work out.
+
+PRACTICAL WORK 5
 The two sentences below appear to be parsed accurately after adding another OT-mark before +PPattach to give preference to the OBL-AG reading.
 
 the dog was given a bone by the girl
