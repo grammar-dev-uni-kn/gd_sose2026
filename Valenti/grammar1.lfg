@@ -771,15 +771,20 @@ him    PRON * (^ PRED) = 'he'
                @PRON-ACC.
 
 
-"it     PRON * (^ PRED) = 'it'
+it     PRON * (^ PRED) = 'it'
                @CN-SG
-               { @PRON-NOM | @PRON-ACC }."
+               { @PRON-NOM | @PRON-ACC }.
 
-It     PRON *		(^ PRON-TYPE) = expl_
+It     PRON *	 {
+   		(^ PRED) = 'pro'
+   		(^ PRON-TYPE) = pers
+   		{ @PRON-NOM | @PRON-ACC }	
+	|              
+		(^ PRON-TYPE) = expl_
                 (^ PRON-FORM) = it 
 		@CN-SG
 		(^ CASE) = nom
-              (^ CAPITAL) = +.
+              (^ CAPITAL) = +}.
 
 them   PRON * (^ PRED) = 'they'
                @CN-PL
