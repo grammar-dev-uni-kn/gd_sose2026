@@ -1,6 +1,6 @@
 #============================================================
 # Testfile for grammar1.lfg - Ahmad Alatrash - SoSe 2026
-# Covers exercises 3, 4, 5, 6, 7, 8
+# Covers exercises 3, 4, 5, 6, 7, 8, 9
 # Grammatical sentences: should parse (positive tests)
 # Ungrammatical sentences: should give 0 parses (negative tests)
 # ============================================================
@@ -156,6 +156,19 @@ John thought that Mary wanted Bill to think that Kim wants to eat beans.
 It seems to be raining.
 
 Mary seems to be eating a banana.
+
+# ---- Exercise 9: Long Distance Dependencies ----
+Sophie likes hoppers.
+
+hoppers, Sophie likes.
+
+hoppers, Sophie wants Mary to like.
+
+hoppers, John persuaded Mary to want to eat.
+
+hoppers, John wanted Mary to think that Bill persuaded Kim to eat.
+
+hoppers, John thought that Mary wanted Bill to think that Kim wants to eat.
 
 # ============================================================
 # UNGRAMMATICAL SENTENCES - should return 0 parses

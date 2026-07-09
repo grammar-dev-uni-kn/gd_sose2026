@@ -26,7 +26,11 @@ english.infl.patch.full.fst
 
 DEMO ENGLISH RULES (1.0)
 
-ROOT --> { S (PUNC) | Simp (EXCL) }.
+ROOT --> { S (PUNC) | Simp (EXCL) | Stop (PUNC) }.
+Stop --> NP: (^ TOPIC) = ! 
+             (^ {XCOMP|COMP}* {OBJ|OBJ2}) = ! ;
+         (PUNC)
+         S: ^=! .
 
 S --> NP: (^ SUBJ)=! (! CASE)=nom;
       VP: ^=!.
