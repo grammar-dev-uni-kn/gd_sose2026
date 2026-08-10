@@ -10,6 +10,8 @@ return [file normalize [file join $home $path]]
 }
 #specify grammar
 set defaultParser [relpath grammar1.lfg]
+
 #load parser
 create-parser $defaultParser
+
 parse-testfile testsuite1.lfg
