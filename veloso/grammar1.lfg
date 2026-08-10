@@ -4,9 +4,9 @@ DEMO   ENGLISH   CONFIG (1.0)
   LEXENTRIES   (DEMO ENGLISH) (MORPH ENGLISH).
   TEMPLATES (DEMO ENGLISH) (STANDARD COMMON). 
   RULES   (DEMO ENGLISH) (MORPH ENGLISH).
-  MORPHOLOGY (DEMO ENGLISH) .
+  MORPHOLOGY (DEMO ENGLISH).
   GOVERNABLERELATIONS    SUBJ OBJ OBJ2 COMP XCOMP OBL OBL-?+.
-  SEMANTICFUNCTIONS    ADJUNCT  TOPIC FOCUS POSS STANDARD.
+  SEMANTICFUNCTIONS    ADJUNCT  TOPIC FOCUS STANDARD.
   NONDISTRIBUTIVES    NUM PERS CONJ-FORM.
   EPSILON   e.
   OPTIMALITYORDER NOGOOD  PPadj +NonAnimObl +AnimObl +PPattach +LocAttach.
@@ -27,57 +27,70 @@ english.infl.patch.full.fst
 
 DEMO   ENGLISH   RULES (1.0)
 
-  ROOT --> { S 
+   ROOT --> { S 
             (PERIOD: @(OT-MARK Punct))
-             |
-             Simp
-           }.  
+           | Simp }.  
 
-  Simp --> e: (^ SUBJ PRED) = 'pro' 
-               (^ SUBJ PERS) = 2; 
-                   VP
+   Simp --> e: (^ SUBJ PRED) = 'pro' 
+              (^ SUBJ PERS) = 2; 
+                   VP: (^TNS-ASP TENSE) =c pres;
                    EXCL.  					"obligatory exclamation mark"
 
    S --> NP: (^ SUBJ)=!
 	     (! CASE)=nom;
- 	 VP: (^ TNS-ASP TENSE);					"require that sentences have tense"
-             (PERIOD: @(OT-MARK Punct)).			"prefer for generation"
+ 	 VP: (^ TNS-ASP TENSE).					"require that sentences have tense"
+             "(PERIOD: @(OT-MARK Punct))"			"prefer for generation"
 
-   VP --> (AUX)                  				"auxiliary introduced for passive" 
-          V: ^=!; 
-          (NP: (^ OBJ)=!         				"optional direct object"
-               (! CASE)=acc)
-          (NP: (^ OBJ2) = !)       				"restricted obj of di-transitives" 
-          PP*: { ! $ (^ ADJUNCT) 				"PPs can be adjuncts"
-                     (! PTYPE) =c sem 				"only semantic PPs here"
-                   {@(OT-MARK LocAttach)
-                     (! OBJ LOC) =c +
-                    |
-                   @(OT-MARK PPadj)    				"disprefer adjunct PP" 
-                    (! OBJ LOC) ~= +}
-                   |(^ OBL) = ! 				"or a a general oblique"
-                   {@(OT-MARK NonAnimObl)
-                    (! PTYPE) =c sem}};
-          (PP: (^ OBL-TO) = !   				"oblique beneficiary of di-trn"
-               (! PFORM) =c to)
-          (PP: (^ OBL-AG) = !  					"oblique agent of passive"
-              {(! ANIMATE) =c +
-              @(OT-MARK AnimObl)}
-               (! PFORM) =c by)
-          (ADV: ! $ (^ ADJUNCT))
-         
-    CP -->  C  S. 
+   VP --> (AUX) 						"auxiliary introduced for passive" 				 
+ 	  V: ^=!;   						"head of VP"
+ 	  (NP: (^ OBJ)=! 					"direct object"
+	       (! CASE)=acc)
+ 	  (NP: (^ OBJ2) = !) 					"secondary object"
+ 	  PP*: { ! $ (^ ADJUNCT) 				"PPs can be all types of adjuncts"
+		 (! PTYPE) =c sem 				"only semantic PPs here"
+		 {
+		 @(OT-MARK LocAttach)
+		 (! OBJ LOC) =c +
+		 |
+		 @(OT-MARK PPadj)
+		 (! OBJ LOC) ~= +
+                 }
+		  "disprefer adjunct PPs" 
+	       | (^ OBL) = ! 					"or a a general oblique"
+	         {@(OT-MARK NonAnimObl)
+		  (! PTYPE) =c sem }
+	       };
+ 	  (PP: (^ OBL-TO) = ! 					"special obl for ditransitives"
+	       "example of a constraining equation: require a value with =c"
+	       (! PFORM) =c to)
+ 	  (PP: (^ OBL-AG) = ! 					"oblique agent of passive"
+	       { (! ANIMATE) =c +
+	         @(OT-MARK AnimObl) }
+	       "example of a constraining equation: require a value with =c"
+	       (! PFORM) =c by )
+	 (ADV: ! $ (^ ADJUNCT))
+             ({ CP: (^ COMP) = !;
+            | 
+              VPinf: (^XCOMP) = !
+              (! VFORM) = inf})
+          V { VPinf | CP}.
 
-    VPinf --> PARTinf VP.
+   CP --> C
+          S.
 
-   NP --> {({D | PRON: (^ SPEC POSS) = !
-                       (^ SPEC POSS PRON-TYPE) =c poss})	"optional determiner, can leave out ^=!"
-           AP*: ! $ (^ ADJUNCT);				"introducing adjectives in sets"	
- 	   N							"head NP"
-           PP*: ! $ (^ ADJUNCT)					"PPs modifying NPs"
-                   (! PTYPE) =c sem				"have to be semantic"
-                  @(OT-MARK PPattach)				"prefer PPs attached to NPs"
-          |PRON: (^ PRON-TYPE) =c pers}.
+   VPinf --> PARTinf
+             VP.
+
+
+   NP --> "either a full NP or a PRON"
+ 	  { ({D | PRON: (^ SPEC POSS) = !
+	                (^ SPEC POSS PRON-TYPE) =c poss}) 	"optional determiner"
+ 	    AP*: ! $ (^ ADJUNCT); 				"introducing adjectives in sets"
+ 	    N "head of NP"
+ 	    PP*: ! $ (^ ADJUNCT) 				"PPs modifying NPs" 
+		 (! PTYPE) =c sem 				"have to be semantic" 
+		 "@(OT-MARK PPattach) replace general PPattach with finegrained attach"
+ 	  | PRON: (^ PRON-TYPE) =c pers}.
 
    AP --> ADV*: ! $ (^ ADJUNCT);
           A
@@ -252,10 +265,12 @@ PAST = (^ TNS-ASP TENSE) = past
          {(^ SUBJ NUM) = sg
          |(^ SUBJ NUM) = pl}.
 
-VPROG = (^ ASPECT PROG) = +.
+PROG = (^ TNS-ASP PROG) = +.
 
 "intransitive verbs"
 INTRANS(P) = (^ PRED)='P<(^ SUBJ)>'.
+
+INTRANS-OBL(P) = (^ PRED) = 'P<(^SUBJ)(^OBL)>'.
 
 "transitive verbs"
 TRANS(P) = @(PASS (^ PRED)='P<(^ SUBJ)(^ OBJ)>'). 
@@ -265,6 +280,8 @@ OPTTRANS(P) = { @(INTRANS P) | @(TRANS P) }.
 
 DITRANS(P) = @(PASS @(DAT-SHIFT (^ PRED)='P<(^ SUBJ) (^ OBJ)
               (^ OBL-TO)>')).
+
+DITRANS-OBL(P) = @(PASS (^ PRED)='P<(^ SUBJ) (^ OBJ) (^ OBL)>').
 
 "passive"
 PASS(FRAME) = { FRAME 				"no passive, just give back subcat frame"
@@ -286,6 +303,14 @@ DAT-SHIFT(FRAME) = { FRAME
                     | FRAME 
                       (^ OBJ)-->(^ OBJ2)
                       (^ OBL-TO)-->(^ OBJ)}.
+
+ANIMATE = (^ ANIMATE) = +.
+
+INANIMATE = (^ ANIMATE) = -.
+
+LOCATION = (^ LOC) = +.
+
+NPOS(N) = (^ NTYPE NSYN) = N.
 
 "template for most prepositions"
 PREP(P) = { (^ PRED) = 'P<(^OBJ)>' 
@@ -325,6 +350,15 @@ The  	  D *  (^ DEF) = +.
 
 a   	  D *  (^ DEF) = -
                (^ NUM) = sg.	"this indefinite only marks singulars"
+
+"complementizers"
+
+that	  C * (^COMP-FORM) = that.
+
+…
+
+to 	  P * @(PREP to); 
+          PARTinf * (^ VFORM) =c inf.
 
 
 "pronouns"
@@ -475,26 +509,30 @@ quickly		Adv * (^ PRED) = 'quickly'.
 
 very		Adv * (^ PRED) = 'very'.
 
+
 "verbs"
 
 "morphologically analyzed"
 
-hate	  V-S XLE @(TRANS %stem); ETC.  "using the morphological analyzer"
+yawn      V-S XLE @(INTRANS %stem).
 
-eat       V-S XLE @(OPTTRANS %stem). 
+build	  V-S XLE @(TRANS %stem). 
 
-think       V-S XLE (^PRED) = '%stem<(^SUBJ)(^COMP)>'.
+hate	  V-S XLE @(TRANS %stem).  "using the morphological analyzer"
 
-convince  V-S XLE (^PRED) = '%stem<(^SUBJ)(^OBJ)(^XCOMP)>'
-                            (^ XCOMP SUBJ) = (^OBJ).
-
-"Full-form version"
-
-hate	  V * @(TRANS hate); 
-	  N * (^ PRED)='hate'.
-
-house 	  +V-S XLE @(TRANS house);
+house 	  V-S XLE @(TRANS house);
 	  ETC.
+
+implement     V-S XLE @(TRANS %stem).
+
+love    V-S XLE @(TRANS %stem); ETC.
+
+steal  V-S XLE @(TRANS %stem).
+
+dedicate  V-S XLE @(DITRANS-OBL %stem).
+
+eat       V-S XLE @(OPTTRANS %stem); ETC.
+
 
 "verbs transitive"
 
@@ -521,6 +559,7 @@ eats      V * @(OPTTRANS eat) @PRES3SG.
 ate       V * @(TRANS eat)
                (^ TNS-ASP TENSE) = past
                (^ MOOD) = ind.
+
 eaten     V * @(TRANS eat) @PASTP.
 
 educate   V * @(TRANS talk) @PRES.
@@ -607,8 +646,14 @@ bananas   N * @(CNP banana).
 bean	  N * @(CNS bean).
 beans	  N * @(CNP bean).
 
-bench 	  N * @(CNS bench).
-benches   N * @(CNP bench).
+bench 	  N * @(CNS bench) 
+	      @DEF
+	      @INANIMATE
+	      @LOCATION.
+benches   N * @(CNP bench)
+              @DEF
+	      @INANIMATE
+	      @LOCATION.
 
 bone 	  N * @(CNS bone).
 bones	  N * @(CNP bone).
@@ -658,6 +703,8 @@ treats 	  N * @(CNP treat).
 waiter 	  N * @(CNS waiter).
 waiters   N * @(CNP waiter).
 
+yoghurt   N * @(CNS yoghurt).
+
 zookeeper N * @(CNS zookeeper).
 zookeepers N * @(CNP zookeeper).
 
@@ -687,13 +734,6 @@ and  CONJ * @(COORD-FORM %stem);
 , COMMA *.
 ! EXCL *.
 
-"complementizers"
-
-that  C * (^COMP-FORM) = that.
-
-to    P * @(PREP to); 
-      PARTinf * (^ VFORM) =c inf.
-
 ----
 
 MORPH   ENGLISH   RULES (1.0)
@@ -704,24 +744,31 @@ MORPH   ENGLISH   RULES (1.0)
 The sublexcial items are the POS assigned to the various tags in morph-lex.lfg" 
 
    V --> V-S_BASE 		"verb stem, e.g. run"
-         V-POS_BASE 		"suffix saying that this is a verb: +Verb"
-         { TNS_BASE 		"tense suffix, e.g. +Pres" 
-           PERS_BASE 		"person suffix, e.g. +3sg"
-         | ASP_BASE}.   	"aspectual information"
+ 	 V-POS_BASE 		"suffix saying that this is a verb: +Verb"
+ 	 { TNS_BASE 		"tense suffix, e.g. +Pres" 
+ 	   PERS_BASE 		"person suffix, e.g. +3sg"
+	 | ASP_BASE}.   	"aspectual information"
 
-   N --> N-S_BASE "noun stem"
-         N-POS_BASE
-         N-NUM_BASE.
+   N --> N-S_BASE 		"noun stem"
+ 	 N-POS_BASE
+ 	 (N-NAME_BASE) 		"allow for +Giv or +Place in names"
+ 	 (N-GEND_BASE) 		"allow for gender information" 
+ 	 {N-NUM_BASE |
+	  COUNTRY_BASE}.
 
    A --> A-S_BASE
-         A-POS_BASE.
+ 	 A-POS_BASE
+ 	 (COUNTRY_BASE)
+ 	 (GRAD_BASE).
+
 ----
 
 MORPH   ENGLISH   LEXICON (1.0)
 
 "this guesses words that are unknown to your lexicon
  to be either adjectives or nouns"
--unknown  ADJ-S XLE (^ PRED) = '%stem';
+ 
+-unknown  A-S XLE (^ PRED) = '%stem';
 	  N-S XLE (^ PRED) = '%stem'.
 
 "lexical entries for tags coming out of the morphological analyzer"
@@ -730,13 +777,14 @@ MORPH   ENGLISH   LEXICON (1.0)
 
 +Verb	V-POS XLE .
 
-+Pres   TNS XLE @PRES
-		@PRES3SG.
++Pres   TNS XLE @PRES.
 
 +3sg	PERS XLE @S-AGR.
 
 +PastBoth TNS XLE "past tense or past particle"
 		 @PAST-BOTH. 
+
++PastTense TNS XLE @PAST .
 
 +123SP	PERS XLE .
 
@@ -744,15 +792,41 @@ MORPH   ENGLISH   LEXICON (1.0)
 
 +Prog	ASP XLE @PROG.
 
-+Token	TOKEN XLE.
 
-+Noun	N-POS XLE.
+"nominal/verbal"
 
-+Pl	N-NUM XLE (^ NUM) = pl.
++Pl 	  N-NUM XLE (^ NUM) = pl.
 
-+Sg	N-NUM XLE (^ NUM) = sg.
++Sg 	  N-NUM XLE (^ NUM) = sg.
 
-+Adj	A-POS XLE.
+"nominal tags"
+
++Noun 	  N-POS XLE @(NPOS common) "3rd person count noun"
+		    @(PERS 3).
+		       
++Prop 	  N-POS XLE @(NPOS proper) "3rd person name"
+		    @(PERS 3).
+		    
++Place 	  N-NAME XLE . 
+
++Giv 	  N-NAME XLE .   "for given names"
+
++Fem 	  N-GEND XLE (^GEND) = fem. 
+
++Masc 	  N-GEND XLE (^GEND) = masc.
+
+
+"other"
+
++Adj 	  A-POS XLE .
+
++Country COUNTRY XLE .
+
++Comp     GRAD XLE (^ DEGREE) = comparative.
+
++Sup      GRAD XLE (^ DEGREE) = superlative.
+
++Adv 	  ADV-POS XLE .
 
 
 ----
