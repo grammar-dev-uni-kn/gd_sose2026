@@ -216,5 +216,28 @@ The house was built by a diligent {worker.|worker|worker. .}
 
 The building houses a happy {family.|family|family. .}
 
+John thought that {the|The} cat ate {the|The} 
+  { {yoghurt.|yoghurt. .} .
+   |yoghurt.
+   |yoghurt}
+
 Mary {seeming|seems} to {be|} eating a {banana. .|banana.|banana}
+
+Sophie likes {hoppers.|hoppers|hoppers. .}
+
+Hoppers Sophie {likes|likes.}
+
+90:REGENERATION DID NOT MATCH 'hoppers, Sophie likes.'.
+
+Hoppers John thought that Mary wanted Bill to think that Kim wants to 
+  {   { eat.
+       |Eat.
+       |{eat.|Eat.} .} 
+    .
+   |eat.
+   |Eat.
+   |eat
+   |Eat}
+
+94:REGENERATION DID NOT MATCH 'hoppers, John thought that Mary wanted Bill to think that Kim wants to eat.'.
 

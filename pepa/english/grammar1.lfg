@@ -30,9 +30,14 @@ DEMO   ENGLISH   RULES (1.0)
 
    ROOT --> { S
              (PERIOD: @(OT-MARK Punct))
-              |
-              Simp
-             }.
+              | Simp
+              | Stop
+              }.
+
+   Stop --> NP: (^ TOPIC) = !
+                (^ {XCOMP|COMP}* {OBJ|OBJ2}) = !;
+             (COMMA)
+             S.
 
    Simp --> e: (^ SUBJ PRED) = 'pro'
                 (^ SUBJ PERS) = 2;
@@ -59,9 +64,6 @@ NPCOORD(CAT) = CAT: ! $ ^;
  	  (NP: (^ OBJ)=!
 	       (! CASE)=acc)
        (NP: (^ OBJ2)=!)
-       ({VPinf: (^ XCOMP) = !
-        |CP: (^ COMP) = !
-        })
        PP*: { ! $ (^ ADJUNCT) " $ -> this means -in the set of- "
                   (! PTYPE) =c sem
                   (! OBJ ANIM) =c +
@@ -77,7 +79,10 @@ NPCOORD(CAT) = CAT: ! $ ^;
           (PP: (^ OBL-AG) = !)
           { Adv*: ! $ (^ ADJUNCT)
           | @(SCCOORD VP)
-          }.
+          }
+            ({VPinf: (^ XCOMP) = !
+        |CP: (^ COMP) = !
+        }).
 
    VPinf --> PARTinf
              VP: ^=!.
@@ -435,6 +440,16 @@ thought N * (^ PRED)='thought'
               @SG-3PERS
               (^ ANIM) = -.
 
+yoghurt N * (^ PRED) = 'yoghurt'
+              "@CN"
+              @SG-3PERS
+              (^ ANIM) = -.
+
+hoppers   N * (^ PRED) = 'hopper'
+              "@CN"
+              @PL-3PERS
+              (^ ANIM) = +.
+
 Jordan N * (^ PRED) = 'named'
            (^ NAME) = 'Jordan'
            @SG-3PERS
@@ -611,6 +626,9 @@ build  V-S XLE @(TRANS build);
        ETC.
 
 house  +V-S XLE @(TRANS house);
+       ETC.
+
+like V-S XLE @(TRANS like);
        ETC.
 
 give     V*
