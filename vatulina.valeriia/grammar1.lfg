@@ -34,7 +34,8 @@ V --> V-S_BASE
       PERS_BASE
       |
       ASP_BASE
-      }.
+      |
+      PART_BASE}.
 
 N --> N-S_BASE
       N-POS_BASE
@@ -56,12 +57,20 @@ DEMO   ENGLISH   RULES (1.0)
 
 	ROOT --> {S 
 		 (PERIOD)
-		 | Simp}.
+		 | Simp
+		 | Stop
+		 }.
 
 	Simp --> e: (^ SUBJ PRED) = 'pro'
 		    (^ SUBJ PERS) = 2;
 		 VP: (^ TNS-ASP TENSE) =c pres;
 		 EXCL.
+	
+	Stop --> NP: (^ TOPIC) = !
+		     (^ {XCOMP|COMP}* {OBJ|OBJ2}) = !;
+		 (COMMA)
+		 S
+		 (PERIOD).
 
    	S -->	NP: (^ SUBJ) = !
 	    	    (! CASE) = nom;
@@ -94,10 +103,13 @@ DEMO   ENGLISH   RULES (1.0)
 	         @(OT-MARK AnimObl) }
 	       "example of a constraining equation: require a value with =c"
 	       (! PFORM) =c by )
-	 (ADV: ! $ (^ ADJUNCT))
-	 ({ CP: (^ COMP) = !;
-	 | VPinf: (^ XCOMP) = !
-		  (! VFORM) = inf}).
+	  (ADV: ! $ (^ ADJUNCT))
+	  ({
+	    CP: (^ COMP) = !;
+	  | 
+	    VPinf: (^ XCOMP) = !
+		   (! VFORM) =c inf
+	   }).
 
 	
 	VPinf --> PARTinf
@@ -106,33 +118,31 @@ DEMO   ENGLISH   RULES (1.0)
 	CP --> C
 	       S.
 
-   	NP -->	{({D
-			|
-			PRON: (^ SPEC POSS) = !
-	                      (^ SPEC POSS PRON-TYPE) =c poss})
-   			AP*: ! $ (^ ADJUNCT);
- 			N
-			PP*: ! $ (^ ADJUNCT)
-				 (! PTYPE) =c sem 
-				 @(OT-MARK PPattach)
-			|
-			PRON: (^ PRON-TYPE) =c pers
-			      (^ PRON-CASE) =c nom
-			|
-			PROPER
-			}.
+   	NP -->	{({D | PRON: (^ SPEC POSS) = !
+	                     (^ SPEC POSS PRON-TYPE) =c poss})
+   		AP*: ! $ (^ ADJUNCT);
+ 		N
+		PP*: ! $ (^ ADJUNCT)
+		         (! PTYPE) =c sem 
+			 @(OT-MARK PPattach)
+		|
+		PRON: ^=!
+		     (^ PRON-TYPE) =c pers
+	        |
+		PROPER: ^=!
+		}.
 
 	AP -->	Adv*: ! $ (^ ADJUNCT);
 		A
 		(COMMA).
 
    	PP -->	{P: ^=!
-   		    	(! PTYPE) =c sem;
+   		 (! PTYPE) =c sem;
 		NP: (^ OBJ) = !
-			(! CASE) = acc;
+		    (! CASE) = acc;
 		|
 		P: ^=!
-			(! PTYPE) =c nosem;
+		    (! PTYPE) =c nosem;
 		NP
 		}.
 
@@ -189,7 +199,9 @@ TRANS-OBL(P) = @(PASS(^ PRED) = 'P<(^ SUBJ) (^ OBJ) (^ OBL)>').
 
 IND-MD = (^ MOOD) = indicative.
 
-PRES-TNS = (^ TNS-ASP TENSE) = pres.
+PRES-TNS = { (^ VFORM) ~= inf
+	     (^ TNS-ASP TENSE) = pres
+	   | (^ VFORM) = inf}.
 
 PAST-TNS = (^ TNS-ASP TENSE) = past.
 
@@ -197,17 +209,20 @@ PAST-PRT = (^ PARTICIPLE) = past.
 
 PRES-PRT = (^ PARTICIPLE) = pres.
 
-3PER-SG = (^ SUBJ PERS) = 3
-	  (^ SUBJ NUM) = sg.
+3PER-SG = @PRES-TNS
+	  @S-AGR.
 
-OTH-PER = { (^ VFORM) ~= inf
-	    {(^ SUBJ NUM) = pl
-	    | 
-	    (^ SUBJ PERS) ~= 3
-	    (^ SUBJ NUM) = sg
-            @(OT-MARK sg-imp)}
-	    | 
-	    (^ VFORM) = inf}.
+S-AGR = (^ SUBJ PERS) = 3
+	(^ SUBJ NUM) = sg. 
+
+BARE-AGR = {(^ VFORM) ~= inf
+	   	{(^ SUBJ NUM) = pl
+	   	|
+           	(^ SUBJ PERS) ~= 3
+	   	(^ SUBJ NUM) = sg
+	   	@(OT-MARK sg-imp)
+	   	}
+	   |(^ VFORM) = inf}.
 
 "nouns"
 
@@ -217,18 +232,10 @@ INANIMATE = (^ ANIMATE) = -.
 
 LOCATION = (^ LOC) = +.
 
-COUNT-NOUN(P) = (^ PRED) = 'P'
+COUNT-NOUN(P N) = (^ PRED) = 'P'
+		(^ NUM) = N
 	        (^ PERS) = 3
 	        (^ NTYPE) = count.
-
-CN-SG = (^ NUM) = sg
-	(^ PERS) = 3
-	{ (^ DEF)
-        | (^ POSS)
-        }.
-
-CN-PL = (^ NUM) = pl
-	(^ PERS) = 3.
 
 NP-CONJUNCT = { (! PERS)=c 1
 		(^ PERS)=1
@@ -318,11 +325,9 @@ MORPH ENGLISH LEXICON (1.0)
 
 +Pres		TNS XLE @PRES-TNS. "Tense, info from morphological analyser, template"
 
-+PresPart	PART XLE @PRES-PRT.
-
 +PastTense	TNS XLE @PAST-TNS.
 
-+3sg		PERS XLE @3PER-SG.
++3sg		PERS XLE @S-AGR.
 
 +PastBoth	TNS XLE {@PAST-TNS | @PAST-PRT}.
 
@@ -330,9 +335,11 @@ MORPH ENGLISH LEXICON (1.0)
 
 +123SP 		PERS XLE .
 
-+Non3sg 	PERS XLE @OTH-PER.
++Non3sg 	PERS XLE @BARE-AGR.
 
 +Prog 		ASP XLE (^ TNS-ASP PROG) = +.
+
++PresPart	PART XLE @PRES-PRT.
 
 "adjective tags"
 
@@ -361,83 +368,53 @@ quickly		Adv * (^ PRED) = 'quickly'.
 
 "nouns"
 
-banana		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
-	 		@INANIMATE.
-
-boy		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
+boy		N-S XLE (^ PRED) = '%stem'
 	 		@ANIMATE.
 
-cage 		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
-			@INANIMATE
+cage 		N-S XLE (^ PRED) = '%stem'
 			@LOCATION.
 
-cake		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
-	 		@INANIMATE.
-
-cat		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
+cat		N-S XLE (^ PRED) = '%stem'
 	 		@ANIMATE.
 
-child		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
+child		N-S XLE (^ PRED) = '%stem'
 	 		@ANIMATE.
 
-dog		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
+dog		N-S XLE (^ PRED) = '%stem'
 	 		@ANIMATE.
 
-family		N-S XLE (^ PRED) = '%stem'.
-
-garden 		N-S XLE @(COUNT-NOUN %stem)
-         		@DEF
+garden 		N-S XLE (^ PRED) = '%stem'
 	 		@LOCATION.
 
-girl		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
+girl		N-S XLE (^ PRED) = '%stem'
+			(^ PERS) = 3
 	 		@ANIMATE.
 
-goat		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
+goat		N-S XLE (^ PRED) = '%stem'
 	 		@ANIMATE.
 
-gorilla		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
+leopard		N-S XLE (^ PRED) = '%stem'
 	 		@ANIMATE.
 
-leopard		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
+leprechaun	N-S XLE (^ PRED) = '%stem'
 	 		@ANIMATE.
 
-leprechaun	N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
+monkey		N-S XLE (^ PRED) = '%stem'
 	 		@ANIMATE.
 
-monkey		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
+mouse		N-S XLE (^ PRED) = '%stem'
 	 		@ANIMATE.
 
-mouse		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
-	 		@ANIMATE.
-
-robot		N-S XLE @(COUNT-NOUN %stem)
-        		@DEF
+robot		N-S XLE (^ PRED) = '%stem'
 			@ANIMATE.
 
-table 		N-S XLE @(COUNT-NOUN %stem)
-          		@DEF
+table 		N-S XLE (^ PRED) = '%stem'
 	  		{@ANIMATE | @INANIMATE @LOCATION}.
 
-treat 		N-S XLE @(COUNT-NOUN treat)
-          		@DEF.
+treat 		N-S XLE (^ PRED) = '%stem'.
 
 waiter		N-S XLE (^ PRED) = '%stem'
-			@ANIMATE
-			@DEF.
+			@ANIMATE.
 
 worker		N-S XLE (^ PRED) = '%stem'
 			@ANIMATE.
@@ -445,7 +422,6 @@ worker		N-S XLE (^ PRED) = '%stem'
 yoghurt		N * (^ PRED) = 'yoghurt'.
 
 zookeeper	N * @(COUNT-NOUN zookeeper sg)
-		    @DEF
 		    @ANIMATE.
 
 "verbs"
@@ -466,32 +442,9 @@ devour		V-S XLE @(TRANS %stem).
 
 eat		V-S XLE @(OPT-TRANS %stem).
 
-educate 	V * @(TRANS educate)
-	    	    @PRES-TNS
-	    	    @OTH-PER.
+educate 	V-S XLE @(TRANS %stem).
 
-educates 	V * @(TRANS educate)
-	    	    @PRES-TNS
-	    	    @3PER-SG.
-
-educated	V * @(TRANS educate)
-		    { @PAST-PRT
-	    	    |
-		    @PAST-TNS}.
-
-give		V * @(DI-TRANS give)
-		    @PRES-TNS
-		    @OTH-PER.
-
-gives		V * @(DI-TRANS give)
-		    @PRES-TNS
-		    @3PER-SG.
-
-given		V * @(DI-TRANS give)
-		    @PAST-PRT.
-
-gave		V * @(DI-TRANS give)
-		    @PAST-TNS.
+give		V-S XLE @(DI-TRANS %stem).
 
 hate		V-S XLE @(TRANS %stem); ETC.
 
@@ -499,18 +452,7 @@ house		V-S XLE @(TRANS %stem); ETC.
 
 implement	V-S XLE @(TRANS %stem); ETC.
 
-like 		V * @(TRANS like)
-	    	    @PRES-TNS
-	    	    @OTH-PER.
-
-likes		V * @(TRANS like)
-	    	    @PRES-TNS
-	    	    @3PER-SG.
-
-liked		V * @(TRANS like)
-		    { @PAST-PRT
-	    	    |
-		    @PAST-TNS}.
+like 		V-S XLE @(TRANS %stem).
 
 "object control verb"
 
@@ -532,23 +474,12 @@ put 		V * @(TRANS-OBL put)
 
 rain		V-S XLE @(INTRANS %stem).
 
-see		V * @(TRANS see)
-	    	    @PRES-TNS
-	    	    @OTH-PER.
-
-sees		V * @(TRANS see)
-	    	    @PRES-TNS
-	    	    @3PER-SG.
-
-saw		V * @(TRANS see)
-		    @PAST-TNS.
+see		V-S XLE @(TRANS %stem).
 
 seen		V * @(TRANS see)
 	    	    @PAST-PRT.
 
-sit 		V * @(INTRANS sit)
-		    @PRES-TNS
-		    @OTH-PER.
+sit 		V-S XLE @(INTRANS %stem).
 
 sat		V * @(INTRANS sit)
 		    (^ OBL PFORM) =c on
@@ -653,15 +584,7 @@ her		PRON * {@(PRON-PERS she sg 3)
 			@(PRON-POSS she 3)
 			}.
 
-"PRON *(...) два різних записи"
-"POSS * (...)"
-
-it 		PRON * {@(PRON-PERS it sg 3)
-		        @(PRON-CASE nom)
-			|
-			@(PRON-PERS it sg 3)
-			@(PRON-CASE acc)
-			}.
+it 		PRON * @(PRON-PERS it sg 3).
 
 its 		PRON * @(PRON-POSS it 3).
 
@@ -675,7 +598,7 @@ them		PRON * @(PRON-PERS they pl 3)
 
 by 		P * @(PREP by).
 
-to 		P * @(PREP to);
+to 		P 	* @(PREP to);
 		PARTinf * (^ VFORM) =c inf.
 
 in 		P * @(PREP in).
@@ -700,7 +623,7 @@ was	AUX * 	@PAST-TNS
 were	AUX * 	@PAST-TNS
 		(^ PASSIVE) =c +
 	      	{ (^ SUBJ PERS) = 2
-	      	| (^ SUBJ PERS) = 3c
+	      	| (^ SUBJ PERS) = 3
 	      	}
 	      	(^ SUBJ NUM) = pl.
 

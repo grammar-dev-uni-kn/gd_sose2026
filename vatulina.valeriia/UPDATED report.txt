@@ -1,3 +1,10 @@
+PRACTICAL WORK 9
+In this practical work, I have implemented long-distance dependencies and fixed some of the issues the grammar had previously. At the same time, I have faced several new issues I could not resolve. First, without DEF in the lexical entries of nouns, the grammar allows incorrect sentences with no articles, such as "cat chases dogs". At the same time, when the lexical entries specifically contain DEF, the grammar stops parsing the sentences with such nouns at all.
+
+While I have changed the grammar according to the reference grammar to allow infinitives, some of the latest sentences, like "Mary seems to be eating a banana" stopped working.
+
+Folder Grammar 2 contains the grammar for the non-existent language.
+
 PRACTICAL WORK 8
 I implemented the control and raising verbs in the grammar, but because of the solutions made previously to implement passive, all the new sentences in the past tense had two different readings. I changed the rules and verb templates to make them similar to the reference grammar. It fixed the passive readings in the new sentences but broke a bunch of sentences from the previous assignments. I could not fix some of them.
 
